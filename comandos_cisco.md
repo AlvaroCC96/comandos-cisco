@@ -52,6 +52,24 @@
 
 (config-router)#passive-interface <interface/serial> //bloquea el broadcast hacia la interfaz/serial, para bloquear donde no hayan router
 
+### RIP v2
+
+(config)# router rip 
+
+(config-router)# version 2
+
+(config-router)# no auto-summary // Para que no haga resumen de rutas
+
+(config-router)#passive-interface <interface/serial> //bloquea el broadcast hacia la interfaz/serial, para bloquear donde no hayan router
+
+(config-router)# network \<ip red>  //si hay mas de una red se colocan todas, sin mascaras por ser protocolos con clase
+
+(config-router)# default information originate
+
+### Nota: Mask Inv = 255.255.255.255 - Máscara - Ejemplo: 255.255.255.255 - 255.255.255.252 = 0.0.0.3
+
+### Nota 2: Métrica = (Bandwidth - Delay) * 256 
+
 ### EIGRP
 
 (config)#router eigrp
@@ -66,14 +84,7 @@
 
 (config-router)#network \<ip red> \<mask inv> area \<id area>
 
-(config-router) # router-id <ip mayor> //para designar el router identificador
- 
- (config)#bandwith <valor ancho de banda> //configuracion ancho de banda
 
- (config int) #ip ospf cost <valor del costo>
- 
- (config int) #ip ospf priority <valor>   //entre 0-255 , 0 no sera designado ni de respaldo
- 
 ## Switch
 (config)#ip routing //habilita enrutamiento capa 2
 
@@ -85,6 +96,7 @@
 (config-if)#switchport acces vlan \<NºVlan>
 
 (config-if)#switchport trunk encapsulation dot1q
+
 ### Configurar VLAN
 (config)#vlan \<NºVlan>
 
@@ -94,6 +106,7 @@
 (config)#vtp domain \<dominio>
 
 (config)#vtp version \<Nº>2
+
 ### VTP Cliente
 (config)#vtp mode client
 
@@ -139,13 +152,13 @@
 (config-if)#switchport mode trunk
 
 ### NAT
-(config-if)#nat inside
+(config-if)#ip nat inside
 
-(config-if)#nat outside
+(config-if)#ip nat outside
 
 (config)#access-list \<Nºlista> permit \<ip-inside> \<mask-inv>
 
-(config)#ip nat inside source list \<NºLista> \<interfaz-salida> overload
+(config)#ip nat inside source list \<NºLista> int \<interfaz-salida> overload
 
 
 
